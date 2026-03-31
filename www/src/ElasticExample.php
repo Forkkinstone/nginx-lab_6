@@ -1,6 +1,6 @@
 <?php
 namespace App;
-use App\Helpers\ClientFactory;
+use App\ClientFactory;
 
 class ElasticExample {
     private $client;

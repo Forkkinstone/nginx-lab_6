@@ -21,7 +21,8 @@ services:
     depends_on:
       - db
       - redis
-
+      - elasticsearch
+      - clickhouse
   db:
     image: mysql:8.0
     container_name: lab6_db
@@ -49,6 +50,24 @@ services:
     container_name: lab6_redis
     ports:
       - "6379:6379"
+
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    container_name: lab6_clickhouse
+    environment:
+      - CLICKHOUSE_DB=lab6_db
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+    ports:
+      - "8123:8123"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    container_name: lab6_elastic
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 
 volumes:
   db_data:
